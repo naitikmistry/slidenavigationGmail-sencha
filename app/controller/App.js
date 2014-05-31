@@ -4,7 +4,7 @@ Ext.define('SlideNav.controller.App',{
         refs:{
             main : 'main',
             navigation : 'navigation',
-
+            slideContainer:'slideContainer',
             navBtn : '#slideNavBtn'
         },
 
@@ -28,79 +28,65 @@ Ext.define('SlideNav.controller.App',{
      * Toggle the slide navogation view
      */
     toggleNav : function(){
-        console.log('adkg');
-
         var me = this;
         var mainWidth = document.body.clientWidth;
-        var subtractWidth = mainWidth - (mainWidth * 0.8)
-
+        var subtractWidth = mainWidth - (mainWidth * 0.8);
         if(!me.getNavigation()) {
             Ext.create('SlideNav.view.Navigation');
         }
         if(this.counter == 0) {
-            //me.getMain().query('#slideContainer')[0].animateActiveItem(me.getNavigation() , {type: 'slide', direction: 'right'});
-            Ext.Viewport.add(me.getNavigation());
-            me.getNavigation().show();
-
-            Ext.Animator.run({
-            element: me.getNavigation().element,
-            duration: 500,
-            easing: 'ease-in',
-            preserveEndState: true,
-            from: {
-                left: -(mainWidth - subtractWidth)
-            },
-            to: {
-                left: 0
-            }
-        });
-        
+            me.getMain().query('#slideContainer')[0].setMasked({
+                xtype: 'mask'
+            });
+            me.animatorCallLeft(mainWidth, subtractWidth);
             this.counter = 1;
-            
-            
-            //me.getNavigation().show({type: 'slide', direction: 'right'});
-            //this.counter = 1;
         }
         else {
-          Ext.Animator.run({
-            element: me.getNavigation().element,
-            duration: 500,
-            easing: 'ease-in',
-            preserveEndState: true,
-            from: {
-                left: 0
-            },
-            to: {
-                left: -(mainWidth - subtractWidth)
-            }
-        });
+            me.animatorCallRight(mainWidth, subtractWidth);
+            setTimeout(function(){
+                me.getMain().query('#slideContainer')[0].setMasked(false);
+            }, 500);
             this.counter = 0;
         }
+    },
 
-        //console.log(me.getMain().query('#slideContainer')[0].element);
-
-        /*console.log(me.getMain().query('#slideContainer')[0].getActiveItem())
-        if(me.getMain().query('#slideContainer')[0].getActiveItem().hide()){
-            me.getMain().query('#slideContainer')[0].getActiveItem().show();
+    animatorCallLeft: function(mainWidth, subtractWidth) {
+        var me = this;
+        if(!me.getNavigation()){
+            Ext.create('SlideNav.view.Navigation');
         }
-        else {
-            me.getMain().query('#slideContainer')[0].getActiveItem().hide();
-        }*/
-
-        //Ext.Viewport.setActiveItem(me.getNavigation());
-       /* me.getMain().query('#slideContainer')[0].setActiveItem(me.getNavigation());
+        Ext.Viewport.add(me.getNavigation());
+        me.getNavigation().show();
         Ext.Animator.run({
             element: me.getNavigation().element,
             duration: 500,
             easing: 'ease-in',
             preserveEndState: true,
             from: {
-                height: '0px'
+                left: -(mainWidth - subtractWidth)
             },
             to: {
-                height: '250px'
+                left: 0
             }
-        });*/
-        //
+        });
+    },
+
+    animatorCallRight: function(mainWidth, subtractWidth) {
+        var me = this;
+        if(!me.getNavigation()){
+            Ext.create('SlideNav.view.Navigation');
+        }
+        Ext.Animator.run({
+            element: me.getNavigation().element,
+            duration: 500,
+            easing: 'ease-in',
+            preserveEndState: true,
+            from: {
+                left: 0
+            },
+            to: {
+                left: -(mainWidth - subtractWidth)
+            }
+        });
     }
 });

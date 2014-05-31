@@ -4,7 +4,6 @@ Ext.define('SlideNav.view.Navigation', {
     modal: true,
     hideOnMaskTap: false,
     requires : ['Ext.data.Store'],
-
     config: {
         cls : 'side-list',
         width: '80%',

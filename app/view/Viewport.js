@@ -10,7 +10,6 @@ Ext.define('SlideNav.view.Viewport', {
         items : [{
             xtype : 'main',
             cls: 'slide',
-
             // Needed to fit the whole content
             width: '100%'
         }, {
