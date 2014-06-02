@@ -8,6 +8,17 @@ Ext.define('SlideNav.view.Navigation', {
         cls : 'side-list',
         width: '80%',
         itemTpl : '{title}',
+        listeners:{
+            initialize:function(ele){
+                var me = this;
+                var mainWidth = document.body.clientWidth;
+                var subtractWidth = mainWidth - (mainWidth * 0.8);
+                ele.element.on('drag',function(event){
+                    SlideNav.app.getController('App').animatorCallRight(mainWidth, subtractWidth);
+                })
+            }
+
+        },
         data : [
             {
                 title : 'Item 1'
